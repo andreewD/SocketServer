@@ -47,4 +47,4 @@ app.get('/start', (req, res) => {
 
 
 
-httpServer.listen(3000 || process.env.PORT);
+httpServer.listen(process.env.PORT || 3000);
