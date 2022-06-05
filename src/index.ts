@@ -25,6 +25,10 @@ io.on("connection", (socket) => {
     console.log("connection")
 });
 
+io.on('message', (message) =>{
+    console.log(message);
+  });
+
 app.get('/', (req, res) => {
     res.send(JSON.stringify({
         "Tema": "Examen Parcial",
@@ -36,7 +40,7 @@ app.get('/', (req, res) => {
 app.get('/getSockets', async (req, res) => {
     const sockets = await io.fetchSockets();
     let ids: string[] = []
-    sockets.map(item => {
+    sockets.forEach(item => {
         ids.push(item.id)
     })
     res.send(stringify(ids))
@@ -49,7 +53,15 @@ app.get('/start', async (req, res) => {
         finalData.push({ index, X, Y })
     }
     const sockets = await io.fetchSockets()
-    io.sockets.emit("message", finalData)
+    let ids : string[]=[]
+    sockets.forEach(item => {
+        ids.push(item.id)
+    })
+   
+    for (let index = 0; index < finalData.length/ids.length; index++) {
+        io.to(ids[index]).emit('calc',finalData.slice(finalData.length*index/ids.length,finalData.length*(index+1)/ids.length))
+        
+    }
 
     res.send(JSON.stringify(finalData))
 
