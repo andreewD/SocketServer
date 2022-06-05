@@ -14,7 +14,6 @@ const generator = () => {
 
 export { generator }
 
-// export { X, Y }
 
 
 
