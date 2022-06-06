@@ -51,10 +51,11 @@ app.get('/getSockets', async (req, res) => {
     }
 })
 
-app.get('/start', async (req, res) => {
+app.get('/start/:quantity', async (req, res) => {
+    const { quantity } = req.params
     try {
         let finalData: Array<regressionExpression> = []
-        for (let index = 0; index < 60; index++) {
+        for (let index = 0; index < parseInt(quantity); index++) {
             const { X, Y } = generator()
             finalData.push({ index, X, Y })
         }
